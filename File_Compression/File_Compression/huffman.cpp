@@ -1,21 +1,17 @@
 #include "huffman.h"
 
-const string inFile = "in.txt";
-const string outFile = "in.bin";
+string huffman::readTextFile(string inpath) {
+	ifstream in(inpath); //open file
 
-string huffman::readTextFile(ifstream &in) {
 	string text;
 	string currentLine;
-	if (!in) {
-		cout << "File not Found" << endl;
-		exit(0);
-	}
 
-	while (getline(in, currentLine)) {
+	while (getline(in, currentLine)) {//get content of file by reading one by one row of file
 		text += currentLine + '\n';
 	}
 
-	return text.substr(0, text.size() - 1);
+	in.close();
+	return text.substr(0, text.size() - 1);//the character in the end of text is residual
 }
 
 map<char, double> huffman::statistic(string text) {
@@ -48,26 +44,6 @@ huffmanNode* huffman::buildHuffmanTree(const map<char, double>& symbolTable) {
 	return root;
 }
 
-/*huffmanNode* huffman::buildHuffmanTree(const map<char, double>& symbolTable) {
-	priorityQueue<huffmanNode*> pq;
-	//firstly, construct leaf node
-	for (auto it = symbolTable.begin(); it != symbolTable.end(); it++) {
-		pq.push(new huffmanNode(it->first, it->second));
-	}
-	//modify tree into one Node
-	while (pq.size > 1) {
-		huffmanNode* left = pq.pop();
-		huffmanNode* right = pq.pop();
-
-		//create new node
-		pq.push(new huffmanNode('\0', left->freq + right->freq, left, right, false));
-	}
-
-	//last node
-	huffmanNode* root = pq.pop();
-
-	return root;
-}*/
 
 void huffman::encodingTable(map<char, string>& table, huffmanNode* node, string code) {
 	if (node == NULL) {
@@ -96,20 +72,66 @@ string huffman::encodedText(map<char, string>& table, string& text) {
 }
 
 string huffman::convertBinary(int x) {
-	char* s = new char[5];
-	_itoa(x, s, 2);
 
-	string result = s;
+	string result = itoaBin(x);
+
+	return result;
+}
+
+char huffman::convertedChar(string& s) {
+	for (int i = 0; i < s.size(); i++) {
+		char c = s[i];
+
+	}
+
+	return 'c';
+}
+
+string huffman::itoaBin(int x){
+	string result;
+
+	bool isNegative = (x < 0) ? 1 : 0;
+	while(x){
+		if (x % 2 == 0) result = '0' + result;
+		else result = '1' + result;
+
+		x = x / 2;
+	}
+
 	int size = result.size();
 
-	for (int i = 0; i < 4-size; i++) {
+	for (int i = 0; i < 8 - size; i++) {
 		result = "0" + result;
+	}
+
+	if (isNegative) {
+		for (int i = 0; i < 8; i++) {
+			if (result[i] == '0') result[i] = '1';
+			else result[i] = '0';
+		}
+		int i = 8;
+		while (result[i] != '0')
+			i--;
+		for (; i < 8; i++) {
+			if (result[i] == '0') result[i] = '1';
+			else result[i] = '0';
+		}
 	}
 
 	return result;
 }
+
+string huffman::convertBinary(char c) {
+	if (c >= 65 && c <= 70) {
+		return convertBinary(10 + (c - 65));
+	}
+	else {
+		return convertBinary(atoi(&c));
+	}
+}
 void huffman::paddedEncodingText(string &code) {
-	int extraPadding = 4 - code.size() % 4;
+	//string result;
+	int extraPadding = 8 - code.size() % 8;
 
 	for (int i = 0; i < extraPadding; i++) {
 		code += '0';
@@ -117,6 +139,9 @@ void huffman::paddedEncodingText(string &code) {
 
 	string paddedInfor = convertBinary(extraPadding);
 	code = paddedInfor + code;
+
+	
+
 }
 
 int huffman::convertedDecimal(string s) {
@@ -141,79 +166,168 @@ string huffman::substr(string s, int a, int b) {
 	return result;
 }
 
-vector<int> huffman::decimalCodingArray(string& code) {
-	vector<int> result;
 
-	for (int i = 0; i < code.size(); i += 8) {
-		string s = substr(code, i, i + 8);
-		result.push_back(convertedDecimal(s));
+void huffman::encodingFile(string& s, ofstream& out) {
+	paddedEncodingText(s);
+	char c = s.size() / 8;
+	out.write((char*)&c, 1);
+
+	for (int i = 0; i < s.size(); i += 8) {
+		string code = substr(s, i, i + 8);
+		
+		int it= convertedDecimal(code);
+		unsigned char c = convertedDecimal(code);
+	
+		out.write((char*)&c, 1);
 	}
 
+}
 
+
+
+void huffman::writeCodingText(map<char, string>& table, string& code, string outPath) {
+
+	ofstream out(outPath, ios::binary);
+	if (!out)
+	{
+		cout << "Can't open file to write encoding" << endl;
+		return;
+	}
+
+	unsigned char size = table.size();//number of characters encoded
+	out.write((char*)&size, 1);
+
+	for (auto it = table.begin(); it != table.end(); it++) {
+		char c = it->first;
+		string character;
+
+		character += c;
+		
+
+		out << character;//write character of table
+		//cout << character <<endl << it->second << endl;
+		encodingFile(it->second, out); //write code of that character into file
+	}
+
+	encodingFile(code, out);//mainly encoding the content of file opened before
+
+	out.close();
+	
+}
+
+string huffman::decodingCodeFile(ifstream& in) {
+	unsigned char ch;
+	string result;
+	while (in.read((char*)&ch,1)) {
+		if (ch == '\n')
+			break;
+
+		string check;
+		
+		check += ch;
+		if (ch != '\0')
+			result = result + convertedBit(check);
+		else
+			result = result + itoaBin(0);
+	}
+
+	//result = convertedBit(result);
+	result = removePadding(result);
+	//cout << result << endl;
 	return result;
 }
 
-char huffman::convertedBinToHex(string s) {
-	int result = 0;
-
-	for (int count = 0; count < s.size(); ++count)
-	{
-		result *= 2;
-		result += s[count] == '1' ? 1 : 0;
-	}
-
-	char c;
-	if (result > 9) {
-		c = 65 + (result - 10);
-	}
-	else
-		c = 48 + result;
-
-	return c;
-
-}
-
-void huffman::writeCodingText(map<char, string>& table, string& code, ofstream& out) {
-	
-	out << table.size() << " ";
-
-	for (auto it = table.begin(); it != table.end(); it++) {
-		out << it->first << " " << it->second << " ";
-	}
-	out << "\n";
-	
-	for (int i = 0; i < code.size(); i += 4) {
-		string s = substr(code, i, i + 4);
-		out << convertedBinToHex(s);
-	}
 
 
-}
 
-void huffman::readEncodedFile(map<char, string>& table, string& code, ifstream& in){
-	char c;
+void huffman::readEncodedFile(map<char, string>& table, string& code,string inPath) {
+	string s;
 	string encoded;
+	char character;
+	char c;
 
-	int size;
-	in >> size;
+	ifstream in(inPath, ios::binary);
+	unsigned char ch;
+
+	in.read((char*)&ch, 1);
+	int size = ch;//size of characters
+
+
 
 	for (int i = 0; i < size; i++) {
-		in >> c;
-		in >> encoded;
-		table[c] = encoded;
-	}
-	in.get(c); in.get(c);
+		//read character
+
+		in.get(character);
+		char c;
+		in.read((char*)&c, 1);
+		int size = c;//size of code indicating character
+
+
+		string result;
+		for (int j = 0; j < size; j++) {
+			in.read((char*)&ch, 1);
+		
+			result = result + convertBinary(ch);
+		}
+
+		//remove the code residual
+		encoded = removePadding(result);
 	
-	getline(in, code);
+		//set encoded of character
+		table[character] = encoded;
+	}
+	
+	string result;
+	int count = 0;
+
+	in.read((char*)&ch, 1);//read size of encode to ignore it
+	
+
+	while (in.read((char*)&ch, 1)) {
+		result += convertedBit(ch);//read and decode each character
+	}
+
+	//remove the code residual
+	code = removePadding(result);
+	
+	in.close();
+}
+
+string huffman::convertedBit(char c) {
+
+	string result;
+
+	if (c == '\0') {
+		result = result + itoaBin(0);
+
+	}
+	else
+	{
+		int decimal = char(c);
+		result += convertBinary(decimal);
+	}
+
+	return result;
 }
 
 string huffman::convertedBit(string& code) {
 	int i = 0;
 	string result;
-	while (code[i]) {
+	int count = 0;
+	//while(code[i])
+	for(int i=0;i<code.size();i++)
+	{
 		char c = code[i];
-		result += convertBinary(atoi(&c));
-		i++;
+
+		if (c == '\0') {
+			result = result + itoaBin(0);
+			
+		}
+		else
+		{
+			int decimal = char(c);
+			result += convertBinary(decimal);
+		}
 	}
 
 	return result;
@@ -221,10 +335,12 @@ string huffman::convertedBit(string& code) {
 }
 
 string huffman::removePadding(string& code) {
-	int extraPadding = convertedDecimal(code.substr(0, 4));
+	int extraPadding = convertedDecimal(code.substr(0, 8));
 
-	string result = code.substr(4, code.size() - extraPadding);
-
+	//cout << code.size() - extraPadding << endl;
+	//string result = code.substr(8, code.size() - extraPadding);
+	string result = substr(code, 8, code.size() - extraPadding);
+	//cout << result;
 	return result;
 }
 
@@ -247,6 +363,14 @@ string huffman::decodedText(map<char, string>& table, string& code) {
 	return decodeText;
 }
 
-void huffman::writeDecodingText(string& text, ofstream& out) {
+void huffman::writeDecodingText(string& text, string outPath) {
+	ofstream out(outPath);
+
+	if (!out) {
+		cout << "Can't open file to write Decode" << endl;
+		return;
+	}
+
 	out << text;
+	out.close();
 }
