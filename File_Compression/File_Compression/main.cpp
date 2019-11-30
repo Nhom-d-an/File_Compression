@@ -1,39 +1,31 @@
-#include "huffman.h"
+#include "functionUtilities.h"
 
 int main() {
-	huffman alg;
-	//encoding
-	ifstream in("in.txt");
-	string s = alg.readTextFile(in);
-	in.close();
+	bool exit = false;
 
-	map<char, double> maps = alg.statistic(s);
-	huffmanNode* root = alg.buildHuffmanTree(maps);
-	map<char, string> table;
-	alg.encodingTable(table, root);
-	string code=alg.encodedText(table, s);
-	alg.paddedEncodingText(code);
-	
-	ofstream out("out_encoding.txt");
-	alg.writeCodingText(table, code, out);
-	cout << "encoding done" << endl;
-	out.close();
+	while (!exit) {
+		cout << endl;
+		cout << "1. Encoding File" << endl;
+		cout << "2. Decoding File" << endl;
+		cout << "3. Exit" << endl;
 
-	//decoding
-	map<char, string> ta;
-	string en;
-	in.open("out_encoding.txt");
-	if (!in) return 0;
-	alg.readEncodedFile(ta, en, in);
-	en = alg.convertedBit(en);
-	en = alg.removePadding(en);
-	string text = alg.decodedText(ta, en);
-	in.close();
+		int choice; cin >> choice;
 
-	out.open("out_decoding.txt");
-	alg.writeDecodingText(text, out);
-	cout << "decoding done" << endl;
-	out.close();
+		switch (choice)
+		{
+		case 1:
+			encodingFile();
+			break;
+		case 2:
+			decodingFile();
+			break;
+		case 3:
+			exit = true;
+			break;
+		default:
+			break;
+		}
+	}
 
 	return 0;
 }
