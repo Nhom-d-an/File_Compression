@@ -21,9 +21,15 @@
     <ClCompile Include="huffman.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="functionUtilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="huffman.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="functionUtilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

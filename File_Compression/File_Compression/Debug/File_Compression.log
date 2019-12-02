@@ -1,9 +1,15 @@
-﻿  huffman.cpp
-C:\Users\Sy Pham\Documents\GitHub\File_Compression\File_Compression\File_Compression\File_Compression\huffman.cpp(24,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Sy Pham\Documents\GitHub\File_Compression\File_Compression\File_Compression\File_Compression\huffman.cpp(90,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Sy Pham\Documents\GitHub\File_Compression\File_Compression\File_Compression\File_Compression\huffman.cpp(128,40): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Sy Pham\Documents\GitHub\File_Compression\File_Compression\File_Compression\File_Compression\huffman.cpp(147,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Sy Pham\Documents\GitHub\File_Compression\File_Compression\File_Compression\File_Compression\huffman.cpp(159,28): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Sy Pham\Documents\GitHub\File_Compression\File_Compression\File_Compression\File_Compression\huffman.cpp(185,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Sy Pham\Documents\GitHub\File_Compression\File_Compression\File_Compression\File_Compression\huffman.cpp(235,20): warning C4018: '<': signed/unsigned mismatch
-  File_Compression.vcxproj -> C:\Users\Sy Pham\Documents\GitHub\File_Compression\File_Compression\File_Compression\Debug\File_Compression.exe
+﻿  functionUtilities.cpp
+  huffman.cpp
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(20,20): warning C4018: '<': signed/unsigned mismatch
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(66,20): warning C4018: '<': signed/unsigned mismatch
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(82,20): warning C4018: '<': signed/unsigned mismatch
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(153,40): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(172,23): warning C4267: 'initializing': conversion from 'size_t' to 'char', possible loss of data
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(175,20): warning C4018: '<': signed/unsigned mismatch
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(197,35): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned char', possible loss of data
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(247,7): warning C4101: 'c': unreferenced local variable
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(318,15): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  Generating Code...
+E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\File_Compression\huffman.cpp(351,20): warning C4018: '<': signed/unsigned mismatch
+  File_Compression.vcxproj -> E:\Visual Studio 2017\Assignment\Data Structure and Algorithm\File_Compression\File_Compression\Debug\File_Compression.exe
