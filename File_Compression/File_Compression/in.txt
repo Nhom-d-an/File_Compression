@@ -1,1 +1,376 @@
-just exactly like Father if Father had known as much about it the night before I went out there as he did the day after I came back thinking Mad impotent old man who realized at last that there must be some limit even to the capabilities of a demon for doing harm, who must have seen his situation as that of the show girl, the pony, who realizes that the principal tune she prances to comes not from horn and fiddle and drum but from a clock and calendar, must have seen himself as the old wornout cannon which realizes that it can deliver just one more fierce shot and crumble to dust in its own furious blast and recoil, who looked about upon the scene which was still within his scope and compass and saw son gone, vanished, more insuperable to him now than if the son were dead since now (if the son still lived) his name would be different and those to call him by it strangers and whatever dragon’s outcropping of Sutpen blood the son might sow on the body of whatever strange woman would therefore carry on the tradition, accomplish the hereditary evil and harm under another name and upon and among people who will never have heard the right one; daughter doomed to spinsterhood who had chosen spinsterhood already before there was anyone named Charles Bon since the aunt who came to succor her in bereavement and sorrow found neither but instead that calm absolutely impenetrable face between a homespun dress and sunbonnet seen before a closed door and again in a cloudy swirl of chickens while Jones was building the coffin and which she wore during the next year while the aunt lived there and the three women wove their own garments and raised their own food and cut the wood they cooked it with (excusing what help they had from Jones who lived with his granddaughter in the abandoned fishing camp with its collapsing roof and rotting porch against which the rusty scythe which Sutpen was to lend him, make him borrow to cut away the weeds from the door-and at last forced him to use though not to cut weeds, at least not vegetable weeds -would lean for two years) and wore still after the aunt’s indignation had swept her back to town to live on stolen garden truck and out o f anonymous baskets left on her front steps at night, the three of them, the two daughters negro and white and the aunt twelve miles away watching from her distance as the two daughters watched from theirs the old demon, the ancient varicose and despairing Faustus fling his final main now with the Creditor’s hand already on his shoulder, running his little country store now for his bread and meat, haggling tediously over nickels and dimes with rapacious and poverty-stricken whites and negroes, who at one time could have galloped for ten miles in any direction without crossing his own boundary, using out of his meagre stock the cheap ribbons and beads and the stale violently-colored candy with which even an old man can seduce a fifteen-year-old country girl, to ruin the granddaughter o f his partner, this Jones-this gangling malaria-ridden white man whom he had given permission fourteen years ago to squat in the abandoned fishing camp with the year-old grandchild-Jones, partner porter and clerk who at the demon’s command removed with his own hand (and maybe delivered too) from the showcase the candy beads and ribbons, measured the very cloth from which Judith (who had not been bereaved and did not mourn) helped the granddaughter to fashion a dress to walk past the lounging men in, the side-looking and the tongues, until her increasing belly taught her embarrassment-or perhaps fear;-Jones who before ’61 had not even been allowed to approach the front of the house and who during the next four years got no nearer than the kitchen door and that only when he brought the game and fish and vegetables on which the seducer-to-be’s wife and daughter (and Clytie too, the one remaining servant, negro, the one who would forbid him to pass the kitchen door with what he brought) depended on to keep life in them, but who now entered the house itself on the (quite frequent now) afternoons when the demon would suddenly curse the store empty of customers and lock the door and repair to the rear and in the same tone in which he used to address his orderly or even his house servants when he had them (and in which he doubtless ordered Jones to fetch from the showcase the ribbons and beads and candy) direct Jones to fetch the jug, the two of them (and Jones even sitting now who in the old days, the old dead Sunday afternoons of monotonous peace which they spent beneath the scuppernong arbor in the back yard, the demon lying in the hammock while Jones squatted against a post, rising from time to time to pour for the demon from the demijohn and the bucket of spring water which he had fetched from the spring more than a mile away then squatting again, chortling and chuckling and saying `Sho, Mister Tawm’ each time the demon paused)-the two of them drinking turn and turn about from the jug and the demon not lying down now nor even sitting but reaching after the third or second drink that old man’s state of impotent and furious undefeat in which he would rise, swaying and plunging and shouting for his horse and pistols to ride single-handed into Washington and shoot Lincoln (a year or so too late here) and Sherman both, shouting, ‘Kill them! Shoot them down like the dogs they are!’ and Jones: ‘Sho, Kernel; sho now’ and catching him as he fell and commandeering the first passing wagon to take him to the house and carry him up the front steps and through the paintless formal door beneath its fanlight imported pane by pane from Europe which Judith held open for him to enter with no change, no alteration in that calm frozen face which she had worn for four years now, and on up the stairs and into the bedroom and put him to bed like a baby and then lie down himself on the floor beside the bed though not to sleep since before dawn the man on the bed would stir and groan and Jones would say, ‘flyer I am, Kernel. Hit’s all right. They aint whupped us yit, air they?’ this Jones who after the demon rode away with the regiment when the granddaughter was only eight years old would tell people that he ‘was lookin after Major’s place and niggers’ even before they had time to ask him why he was not with the troops and perhaps in time came to believe the lie himself, who was among the first to greet the demon when he returned, to meet him at the gate and say, ‘Well, Kernel, they kilt us but they aint whupped us yit, air they?’ who even worked, labored, sweat at the demon’s behest during that first furious period while the demon believed he could restore by sheer indomitable willing the Sutpen’s Hundred which he remembered and had lost, labored with no hope of pay or reward who must have seen long before the demon did (or would admit it) that the task was hopeless-blind Jones who apparently saw still in that furious lecherous wreck the old fine figure of the man who once galloped on the black thoroughbred about that domain two boundaries of which the eye could not see from any point.
+#include "huffman.h"
+
+string huffman::readTextFile(string inpath) {
+	ifstream in(inpath); //open file
+
+	string text;
+	string currentLine;
+
+	while (getline(in, currentLine)) {//get content of file by reading one by one row of file
+		text += currentLine + '\n';
+	}
+
+	in.close();
+	return text.substr(0, text.size() - 1);//the character in the end of text is residual
+}
+
+map<char, double> huffman::statistic(string text) {
+	map<char, double> result;
+
+	for (int i = 0; i < text.size(); i++) {
+		result[text[i]]++;
+	}
+
+	return result;
+}
+
+huffmanNode* huffman::buildHuffmanTree(const map<char, double>& symbolTable) {
+	priority_queue<huffmanNode*, vector<huffmanNode*>, cmp> priorityQueue;
+	//firstly, construct leaf node;
+	for (auto it = symbolTable.begin(); it != symbolTable.end(); it++) {
+		priorityQueue.push(new huffmanNode(it->first, it->second));
+	}
+	//modify tree into one Node
+	while (priorityQueue.size() > 1) {
+		huffmanNode* left = priorityQueue.top(); priorityQueue.pop();
+		huffmanNode* right = priorityQueue.top(); priorityQueue.pop();
+
+		//create new node
+		priorityQueue.push(new huffmanNode('\0', left->freq + right->freq, left, right, false));
+	}
+	//last node
+	huffmanNode* root = priorityQueue.top(); priorityQueue.pop();
+
+	return root;
+}
+
+
+void huffman::encodingTable(map<char, string>& table, huffmanNode* node, string code) {
+	if (node == NULL) {
+		return;
+	}
+
+	//leaf node
+	if (node->leafNode) {
+		table[node->letter] = code;
+		return;
+	}
+	//To execute recursion if that is not leaf node
+	encodingTable(table, node->left, code + "0");
+	encodingTable(table, node->right, code + "1");
+}
+
+string huffman::encodedText(map<char, string>& table, string& text) {
+	string code;
+	
+	for (int i = 0; i < text.size(); i++) {
+		
+		code += table[text[i]];
+	}
+
+	return code;
+}
+
+string huffman::convertBinary(int x) {
+
+	string result = itoaBin(x);
+
+	return result;
+}
+
+char huffman::convertedChar(string& s) {
+	for (int i = 0; i < s.size(); i++) {
+		char c = s[i];
+
+	}
+
+	return 'c';
+}
+
+string huffman::itoaBin(int x){
+	string result;
+
+	bool isNegative = (x < 0) ? 1 : 0;
+	while(x){
+		if (x % 2 == 0) result = '0' + result;
+		else result = '1' + result;
+
+		x = x / 2;
+	}
+
+	int size = result.size();
+
+	for (int i = 0; i < 8 - size; i++) {
+		result = "0" + result;
+	}
+
+	if (isNegative) {
+		for (int i = 0; i < 8; i++) {
+			if (result[i] == '0') result[i] = '1';
+			else result[i] = '0';
+		}
+		int i = 8;
+		while (result[i] != '0')
+			i--;
+		for (; i < 8; i++) {
+			if (result[i] == '0') result[i] = '1';
+			else result[i] = '0';
+		}
+	}
+
+	return result;
+}
+
+string huffman::convertBinary(char c) {
+	if (c >= 65 && c <= 70) {
+		return convertBinary(10 + (c - 65));
+	}
+	else {
+		return convertBinary(atoi(&c));
+	}
+}
+void huffman::paddedEncodingText(string &code) {
+	//string result;
+	int extraPadding = 8 - code.size() % 8;
+
+	for (int i = 0; i < extraPadding; i++) {
+		code += '0';
+	}
+
+	string paddedInfor = convertBinary(extraPadding);
+	code = paddedInfor + code;
+
+	
+
+}
+
+int huffman::convertedDecimal(string s) {
+	int exponent = 0;
+	int result = 0;
+
+	for (int i = s.size() - 1; i >= 0; i--) {
+		char c = s[i];
+		result += atoi(&c) * pow(2, exponent);
+		exponent++;
+	}
+
+	return result;
+}
+
+string huffman::substr(string s, int a, int b) {
+	string result;
+	for (int i = a; i < b; i++) {
+		result += s[i];
+	}
+
+	return result;
+}
+
+
+void huffman::encodingFile(string& s, ofstream& out) {
+	paddedEncodingText(s);
+	char c = s.size() / 8;
+	out.write((char*)&c, 1);
+
+	for (int i = 0; i < s.size(); i += 8) {
+		string code = substr(s, i, i + 8);
+		
+		int it= convertedDecimal(code);
+		unsigned char c = convertedDecimal(code);
+	
+		out.write((char*)&c, 1);
+	}
+
+}
+
+
+
+void huffman::writeCodingText(map<char, string>& table, string& code, string outPath) {
+
+	ofstream out(outPath, ios::binary);
+	if (!out)
+	{
+		cout << "Can't open file to write encoding" << endl;
+		return;
+	}
+
+	unsigned char size = table.size();//number of characters encoded
+	out.write((char*)&size, 1);
+
+	for (auto it = table.begin(); it != table.end(); it++) {
+		char c = it->first;
+		string character;
+
+		character += c;
+		
+
+		out << character;//write character of table
+		//cout << character <<endl << it->second << endl;
+		encodingFile(it->second, out); //write code of that character into file
+	}
+
+	encodingFile(code, out);//mainly encoding the content of file opened before
+
+	out.close();
+	
+}
+
+string huffman::decodingCodeFile(ifstream& in) {
+	unsigned char ch;
+	string result;
+	while (in.read((char*)&ch,1)) {
+		if (ch == '\n')
+			break;
+
+		string check;
+		
+		check += ch;
+		if (ch != '\0')
+			result = result + convertedBit(check);
+		else
+			result = result + itoaBin(0);
+	}
+
+	//result = convertedBit(result);
+	result = removePadding(result);
+	//cout << result << endl;
+	return result;
+}
+
+
+
+
+void huffman::readEncodedFile(map<char, string>& table, string& code,string inPath) {
+	string s;
+	string encoded;
+	char character;
+	char c;
+
+	ifstream in(inPath, ios::binary);
+	unsigned char ch;
+
+	in.read((char*)&ch, 1);
+	int size = ch;//size of characters
+
+
+
+	for (int i = 0; i < size; i++) {
+		//read character
+
+		in.get(character);
+		char c;
+		in.read((char*)&c, 1);
+		int size = c;//size of code indicating character
+
+
+		string result;
+		for (int j = 0; j < size; j++) {
+			in.read((char*)&ch, 1);
+		
+			result = result + convertBinary(ch);
+		}
+
+		//remove the code residual
+		encoded = removePadding(result);
+	
+		//set encoded of character
+		table[character] = encoded;
+	}
+	
+	string result;
+	int count = 0;
+
+	in.read((char*)&ch, 1);//read size of encode to ignore it
+	
+
+	while (in.read((char*)&ch, 1)) {
+		result += convertedBit(ch);//read and decode each character
+	}
+
+	//remove the code residual
+	code = removePadding(result);
+	
+	in.close();
+}
+
+string huffman::convertedBit(char c) {
+
+	string result;
+
+	if (c == '\0') {
+		result = result + itoaBin(0);
+
+	}
+	else
+	{
+		int decimal = char(c);
+		result += convertBinary(decimal);
+	}
+
+	return result;
+}
+
+string huffman::convertedBit(string& code) {
+	int i = 0;
+	string result;
+	int count = 0;
+	//while(code[i])
+	for(int i=0;i<code.size();i++)
+	{
+		char c = code[i];
+
+		if (c == '\0') {
+			result = result + itoaBin(0);
+			
+		}
+		else
+		{
+			int decimal = char(c);
+			result += convertBinary(decimal);
+		}
+	}
+
+	return result;
+
+}
+
+string huffman::removePadding(string& code) {
+	int extraPadding = convertedDecimal(code.substr(0, 8));
+
+	//cout << code.size() - extraPadding << endl;
+	//string result = code.substr(8, code.size() - extraPadding);
+	string result = substr(code, 8, code.size() - extraPadding);
+	//cout << result;
+	return result;
+}
+
+string huffman::decodedText(map<char, string>& table, string& code) {
+	string currentCode;
+	string decodeText;
+
+	for (int i = 0; i < code.size(); i++) {
+		currentCode += code[i];
+		
+		for (auto it = table.begin(); it != table.end(); it++) {
+			if (currentCode == it->second) {
+				decodeText += it->first;
+				currentCode = "";
+				break;
+			}
+		}
+	}
+
+	return decodeText;
+}
+
+void huffman::writeDecodingText(string& text, string outPath) {
+	ofstream out(outPath);
+
+	if (!out) {
+		cout << "Can't open file to write Decode" << endl;
+		return;
+	}
+
+	out << text;
+	out.close();
+}
