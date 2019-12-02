@@ -7,7 +7,9 @@ int main() {
 		cout << endl;
 		cout << "1. Encoding File" << endl;
 		cout << "2. Decoding File" << endl;
-		cout << "3. Exit" << endl;
+		cout << "3. Encoding Folder" << endl;
+		cout << "4. Decoding Folder" << endl;
+		cout << "5. Exit" << endl;
 
 		int choice; cin >> choice;
 
@@ -20,6 +22,10 @@ int main() {
 			decodingFile();
 			break;
 		case 3:
+			encodingFolder();
+		case 4:
+			decodingFolder();
+		case 5:
 			exit = true;
 			break;
 		default:
