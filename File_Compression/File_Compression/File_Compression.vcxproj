@@ -128,6 +128,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dirent.h" />
     <ClInclude Include="functionUtilities.h" />
     <ClInclude Include="huffman.h" />
   </ItemGroup>
