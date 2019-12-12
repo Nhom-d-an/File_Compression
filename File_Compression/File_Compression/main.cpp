@@ -4,11 +4,12 @@ int main() {
 	bool exit = false;
 
 	while (!exit) {
+		system("cls");
 		cout << endl;
-		cout << "1. Encoding File" << endl;
-		cout << "2. Decoding File" << endl;
-		cout << "3. Encoding Folder" << endl;
-		cout << "4. Decoding Folder" << endl;
+		cout << "1. Encoding Text File" << endl;
+		cout << "2. Decoding Text File" << endl;
+		cout << "3. Encoding Folder containing Text File" << endl;
+		cout << "4. Decoding Folder containing Text File" << endl;
 		cout << "5. Exit" << endl;
 
 		int choice; cin >> choice;
@@ -27,11 +28,14 @@ int main() {
 			decodingFolder();
 		case 5:
 			exit = true;
-			break;
+			return 0;
 		default:
-			break;
+			return 0;
 		}
+
+		system("pause");
 	}
 
 	return 0;
 }
+
