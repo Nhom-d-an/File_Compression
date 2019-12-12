@@ -7,19 +7,24 @@
 #include <queue> 
 #include <stdlib.h>
 #include <math.h>
-
+#include <time.h>
+#include <stack>
+#include <algorithm>
 
 using namespace std;
 
+//node for huffman structure
 class huffmanNode {
 public:
-	char letter;
-	double freq;
-	bool leafNode;
-	huffmanNode* left;
-	huffmanNode* right;
+	char letter = '\0';
+	double freq = 0;//the frequency of letter's apprearance
+	bool leafNode = true;
+	string code;//code to replace letter
+	huffmanNode* left = NULL;
+	huffmanNode* right = NULL;
 
-	huffmanNode(char letter, double freq, huffmanNode* left=NULL, huffmanNode* right=NULL,bool leafNode=true) {
+	//constructor
+	huffmanNode(char letter, double freq=0, huffmanNode* left=NULL, huffmanNode* right=NULL,bool leafNode=true) {
 		this->letter = letter;
 		this->freq = freq;
 		this->left = left;
@@ -27,44 +32,78 @@ public:
 		this->leafNode = leafNode;
 	}
 
-	bool operator >= (const huffmanNode& other) {
-		return freq >= other.freq;
+	//default constructor
+	huffmanNode() {
+
+	}
+
+	bool operator < (const huffmanNode& other) {
+		return freq < other.freq;
+	}
+
+	//swap two node
+	static void swapNode(huffmanNode*& a, huffmanNode* &b) {
+		char letter = a->letter;
+		double freq = a->freq;
+
+		a->letter = b->letter;
+		a->freq = b->freq;
+
+		b->letter = letter;
+		b->freq = freq;
+	}
+
+	//create a new node what is the same as
+	huffmanNode* clone() {
+		return new huffmanNode(letter, freq);
 	}
 };
 
+
 class huffman {
-	//struct to compare two elements of the map
+	string inPath;//name file to compress
+	string outPath;//name file to write encode what compressed
+
+	huffmanNode* root;
+	vector<huffmanNode*> frequency;//array have 256 elements indicate 256 character
+	int size = 256;
+
+	long long int bitWrited = 0;//number of bit what written to encoding file
+	long long int byteWrited = 0; // number of byte what written to encoding file
+	int bitPadded; // number of bit what written to encoding file
+
+	//struct to compare two elements of the priority queue
 	struct cmp {
 		bool operator()(const huffmanNode* a, const huffmanNode* b) {
-			return a->freq > b->freq;
+			return a->freq > b->freq;//compare frequency of letter of node
 		}
 	};
 
-	string convertBinary(int x);
-	string convertBinary(char c);
-	int convertedDecimal(string s);
-	string substr(string s,int a, int b);
-	string itoaBin(int x);
-	char convertedChar(string& s);
-	string convertedBit(string& code);
-public:
 	//encode
-	string readTextFile(string InPath);
-	map<char, double> statistic(string text);
-	huffmanNode* buildHuffmanTree(const map<char, double>& symbolTable);
-	void encodingTable(map<char, string> &table, huffmanNode* node, string code = "");
-	string encodedText(map<char, string>& table, string& text);
-	void paddedEncodingText(string &code);
-	void encodingFile(string& s, ofstream &out);
-	void writeCodingText(map<char, string>& table, string& code, string outPath);
-	
+	char* writebit(char*& res, int& beginbit, string codetowrite);
+	void encodingTable(huffmanNode* node, string code = "");
+	void writeTree(huffmanNode* node, ofstream& out);
+	void writeEncodeText(ofstream& out);
+	void writeEncodeTail(ofstream& out);
+
+	void statistic();
+	void buildHuffmanTree();
+	void encodingTable();
+	void writeTree();
+	void writeEncoding();
+
 	//decode
-	void readEncodedFile(map<char, string>& table, string& code, string inPath);
-	string decodingCodeFile(ifstream &in);
-	string convertedBit(char c);
-	string removePadding(string& code);
-	string decodedText(map<char, string>& table, string& code);
-	void writeDecodingText(string& text, string outPath);
+	void reBuilTree(huffmanNode*& node, char letter, ifstream& in);
+	void readTail(ifstream& in);
+	void writeDecode(ifstream& in);
+public:
+
+	void encodedFile();//compress file
+	void decodedFile();//decompress file
+	
+	huffman(string inPath, string outPath);//constructor
+
+	
 };
 
 
