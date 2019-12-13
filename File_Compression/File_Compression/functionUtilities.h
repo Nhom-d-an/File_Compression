@@ -1,5 +1,6 @@
 #pragma once
 #include "huffman.h"
+#include "LZ77.h"
 #define _CRT_SECURE_NO_WARNINGS
 #include <windows.h>
 #include <iostream>
