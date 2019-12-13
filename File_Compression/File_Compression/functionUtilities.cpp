@@ -25,7 +25,8 @@ bool checkInPathDeFormat(string inPath, string& outPath, int format=0) {
 	}
 	string tail = inPath.substr(inPath.size() - 5, inPath.size());//take the end of path: .enFi
 
-	if (tail != encode) return false;//format of file is wrong
+	if (tail != encode) 
+		return false;//format of file is wrong
 
 	outPath = inPath.substr(0, inPath.size() - 5) + decode;//change tail
 	return true;
@@ -77,7 +78,7 @@ void decodingFile() {
 		return;
 	}
 
-	cout <<endl<< "Decoding..." << endl;
+	cout << "Decoding..." << endl;
 	clock_t start = clock();
 	decodingFile(inPath);
 	clock_t end = clock();
@@ -86,41 +87,57 @@ void decodingFile() {
 }
 //encoding file
 void encodingFile(string inPath) {
-	string outPath;
-
-	if (!checkInPathEnFormat(inPath, outPath)) {
-		cout << "File have no right Format" << endl;
-		exit(0);
-	}
-
 	if (!checkInPathOpen(inPath)) {
 		cout << "File not Found" << endl;
 		exit(0);
-		
 	}
 
-	huffman algorithm(inPath, outPath);
-	algorithm.encodedFile();
+	string delimiter = ".";
+	string outPath = inPath.substr(0, inPath.find_last_of(delimiter));
+	outPath = outPath + ".enFi";
+	string fileTail = inPath.substr(inPath.find_last_of(delimiter), inPath.size() - 1);
 
+	if (fileTail == ".txt") {
+		cout << "Huffman encoding..." << endl;
+		huffman algorithm(inPath, outPath);
+		algorithm.encodedFile();
+	}
+	else {
+		cout << "LZ77 encoding..." << endl;
+		LZ77* lz77 = new LZ77(inPath, outPath);
+		lz77->compress();
+		delete lz77;
+	}
 }
+
 //decoding file
 void decodingFile(string inPath) {
-	string outPath;
-	
-
-	if (!checkInPathDeFormat(inPath, outPath)) {
-		cout << "File have no right Format" << endl;
-		exit(0);
-	}
-
 	if (!checkInPathOpen(inPath)) {
 		cout << "File not Found" << endl;
 		exit(0);
 	}
 
-	huffman algorithm(inPath, outPath);
-	algorithm.decodedFile();
-	
+	ifstream checkFile(inPath, ios::in);
+	string check;
+	getline(checkFile, check);
+	checkFile.close();
+
+	if (check.find(":\\") == string::npos) {
+		cout << "Huffman decoding..." << endl;
+		string delimiter = ".";
+		string outPath = inPath.substr(0, inPath.find_last_of(delimiter));
+		outPath = outPath + ".txt";
+
+		huffman algorithm(inPath, outPath);
+		algorithm.decodedFile();
+	}
+	else {
+		cout << "LZ77 decoding..." << endl;
+		LZ77* lz77 = new LZ77(inPath);
+		lz77->decompress();
+
+		delete lz77;
+	}
 }
 //transfer string to char
 char* transStringToChar(string s) {
@@ -175,7 +192,6 @@ void processFolder(string path, int format=0){
 	//idenfify tail
 	if (format == 0) {
 		function = encodingFile;
-		tailFile = ".txt";
 	}	
 	else
 	{
@@ -190,11 +206,22 @@ void processFolder(string path, int format=0){
 				continue;
 			if (filename.size() > 4) {
 				string tail;
-				if(format==0)  tail = filename.substr(filename.size() - 4, filename.size());
-				else tail = filename.substr(filename.size() - 5, filename.size());
-				if (tail == tailFile) {//find the right format file
+				if (format == 1) {
+					tail = filename.substr(filename.size() - 5, filename.size());
+					if (tail == tailFile) {//find the right format file
+						string newPath = path + "\\" + filename;
+						function(newPath);//process
+
+						if (remove(transStringToChar(newPath))) {//remove the beggin file
+							cout << "Cann't remove the old File" << endl;
+						}
+
+						continue;
+					}
+				}
+				else {
 					string newPath = path + "\\" + filename;
-					function(newPath);//process
+					function(newPath);
 					if (remove(transStringToChar(newPath))) {//remove the beggin file
 						cout << "Cann't remove the old File" << endl;
 					}
@@ -212,6 +239,7 @@ void processFolder(string path, int format=0){
 		closedir(dir);
 	}
 }
+
 //check the path to folder
 bool checkPathFolder(string inPath) {
 	DIR* dir;//direction
@@ -234,7 +262,6 @@ void encodingFolder() {
 	cout << "Enter the path to the Folder containing Text File needed to encode:";
 	rewind(stdin);
 	getline(cin, inPath);
-
 
 	if (!checkPathFolder(inPath)) {
 		cout << "Cann't open the Folder" << endl;
@@ -276,5 +303,4 @@ void decodingFolder() {
 	clock_t end = clock();
 	cout << "Time: " << (end - start) / CLOCKS_PER_SEC << " s" << endl;
 	cout << "Decoding Successfully" << endl;
-
 }

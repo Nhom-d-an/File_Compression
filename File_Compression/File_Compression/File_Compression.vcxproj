@@ -125,12 +125,15 @@
   <ItemGroup>
     <ClCompile Include="functionUtilities.cpp" />
     <ClCompile Include="huffman.cpp" />
+    <ClCompile Include="LZ77.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dirent.h" />
     <ClInclude Include="functionUtilities.h" />
     <ClInclude Include="huffman.h" />
+    <ClInclude Include="List.h" />
+    <ClInclude Include="LZ77.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
