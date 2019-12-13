@@ -77,7 +77,7 @@ void decodingFile() {
 		return;
 	}
 
-	cout <<endl<< "Decoding..." << endl;
+	cout << "Decoding..." << endl;
 	clock_t start = clock();
 	decodingFile(inPath);
 	clock_t end = clock();
@@ -86,57 +86,57 @@ void decodingFile() {
 }
 //encoding file
 void encodingFile(string inPath) {
-	string delimiter = ".";
-	string outPath1 = inPath.substr(0, inPath.find(delimiter));
-	string outPath2 = outPath1;
-	outPath1 = outPath1 + "_temp.txt";
-	outPath2 = outPath2 + ".enFi";
-
-	/*if (!checkInPathEnFormat(inPath, outPath)) {
-		cout << "File have no right Format" << endl;
-		exit(0);
-	}*/
-
 	if (!checkInPathOpen(inPath)) {
 		cout << "File not Found" << endl;
 		exit(0);
 	}
 
-	//LZ77* lz77 = new LZ77(inPath, outPath1);
-	//lz77->compress();
+	string delimiter = ".";
+	string outPath = inPath.substr(0, inPath.find(delimiter));
+	outPath = outPath + ".enFi";
+	string fileTail = inPath.substr(inPath.find(delimiter), inPath.size() - 1);
 
-	//delete lz77;
-
-	huffman algorithm(inPath, outPath2);
-	algorithm.encodedFile();
+	if (fileTail == ".txt") {
+		cout << "Huffman encoding..." << endl;
+		huffman algorithm(inPath, outPath);
+		algorithm.encodedFile();
+	}
+	else {
+		cout << "LZ77 encoding..." << endl;
+		LZ77* lz77 = new LZ77(inPath, outPath);
+		lz77->compress();
+		delete lz77;
+	}
 }
+
 //decoding file
 void decodingFile(string inPath) {
-	string delimiter = ".";
-	string outPath1 = inPath.substr(0 , inPath.find(delimiter));
-	outPath1 = outPath1 + "_temp.txt";
-	
-	/*if (!checkInPathDeFormat(inPath, outPath)) {
-		cout << "File have no right Format" << endl;
-		exit(0);
-	}*/
-
 	if (!checkInPathOpen(inPath)) {
 		cout << "File not Found" << endl;
 		exit(0);
 	}
 
-	huffman* algorithm = new huffman(inPath, outPath1);
-	algorithm->decodedFile();
+	ifstream checkFile(inPath, ios::in);
+	string check;
+	getline(checkFile, check);
+	checkFile.close();
 
-	delete algorithm;
-	
-	/*LZ77* lz77 = new LZ77(outPath1);
-	lz77->decompress();
+	if (check.find(":\\") == string::npos) {
+		cout << "Huffman decoding..." << endl;
+		string delimiter = ".";
+		string outPath = inPath.substr(0, inPath.find(delimiter));
+		outPath = outPath + ".txt";
 
-	delete lz77;
+		huffman algorithm(inPath, outPath);
+		algorithm.decodedFile();
+	}
+	else {
+		cout << "LZ77 decoding..." << endl;
+		LZ77* lz77 = new LZ77(inPath);
+		lz77->decompress();
 
-	remove(outPath1.c_str());*/
+		delete lz77;
+	}
 }
 //transfer string to char
 char* transStringToChar(string s) {

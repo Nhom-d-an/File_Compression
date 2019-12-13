@@ -202,7 +202,6 @@ void LZ77::compress() {
 	option = COMPRESS;
 
 	out << fileInPath << std::endl;
-	out.flush();
 
 	initBufferCompress();
 
@@ -228,7 +227,7 @@ void LZ77::decompress() {
 
 	getline(in, temp);
 
-	fileOutPath = temp.substr(0, temp.size() - 1);
+	fileOutPath = temp.substr(0, temp.size());
 	std::ofstream out(fileOutPath, std::ios::binary | std::ios::out);
 
 	compressData data;
