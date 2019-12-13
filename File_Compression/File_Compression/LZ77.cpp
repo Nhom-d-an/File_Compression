@@ -228,6 +228,15 @@ void LZ77::decompress() {
 	getline(in, temp);
 
 	fileOutPath = temp.substr(0, temp.size());
+	int check = fileOutPath.find(".enFo");
+
+	if (check != std::string::npos) {
+		std::string token = ".deFo";
+		
+		fileOutPath.replace(check, 5, token);
+		check = fileOutPath.find(".enFo");
+	}
+
 	std::ofstream out(fileOutPath, std::ios::binary | std::ios::out);
 
 	compressData data;
