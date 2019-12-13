@@ -5,7 +5,6 @@ int main() {
 
 	while (!exit) {
 		system("cls");
-		cout << endl;
 		cout << "1. Encoding Text File" << endl;
 		cout << "2. Decoding Text File" << endl;
 		cout << "3. Encoding Folder containing Text File" << endl;
