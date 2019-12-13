@@ -86,41 +86,57 @@ void decodingFile() {
 }
 //encoding file
 void encodingFile(string inPath) {
-	string outPath;
+	string delimiter = ".";
+	string outPath1 = inPath.substr(0, inPath.find(delimiter));
+	string outPath2 = outPath1;
+	outPath1 = outPath1 + "_temp.txt";
+	outPath2 = outPath2 + ".enFi";
 
-	if (!checkInPathEnFormat(inPath, outPath)) {
+	/*if (!checkInPathEnFormat(inPath, outPath)) {
 		cout << "File have no right Format" << endl;
 		exit(0);
-	}
+	}*/
 
 	if (!checkInPathOpen(inPath)) {
 		cout << "File not Found" << endl;
 		exit(0);
-		
 	}
 
-	huffman algorithm(inPath, outPath);
-	algorithm.encodedFile();
+	//LZ77* lz77 = new LZ77(inPath, outPath1);
+	//lz77->compress();
 
+	//delete lz77;
+
+	huffman algorithm(inPath, outPath2);
+	algorithm.encodedFile();
 }
 //decoding file
 void decodingFile(string inPath) {
-	string outPath;
+	string delimiter = ".";
+	string outPath1 = inPath.substr(0 , inPath.find(delimiter));
+	outPath1 = outPath1 + "_temp.txt";
 	
-
-	if (!checkInPathDeFormat(inPath, outPath)) {
+	/*if (!checkInPathDeFormat(inPath, outPath)) {
 		cout << "File have no right Format" << endl;
 		exit(0);
-	}
+	}*/
 
 	if (!checkInPathOpen(inPath)) {
 		cout << "File not Found" << endl;
 		exit(0);
 	}
 
-	huffman algorithm(inPath, outPath);
-	algorithm.decodedFile();
+	huffman* algorithm = new huffman(inPath, outPath1);
+	algorithm->decodedFile();
+
+	delete algorithm;
 	
+	/*LZ77* lz77 = new LZ77(outPath1);
+	lz77->decompress();
+
+	delete lz77;
+
+	remove(outPath1.c_str());*/
 }
 //transfer string to char
 char* transStringToChar(string s) {

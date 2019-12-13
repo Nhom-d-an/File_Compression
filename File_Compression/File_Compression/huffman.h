@@ -102,8 +102,6 @@ public:
 	void decodedFile();//decompress file
 	
 	huffman(string inPath, string outPath);//constructor
-
-	
 };
 
 
