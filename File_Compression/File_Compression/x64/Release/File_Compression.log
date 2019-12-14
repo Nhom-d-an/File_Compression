@@ -13,6 +13,9 @@ D:\Users\Documents\GitHub\project2_ctdl\File_Compression\File_Compression\LZ77.c
 D:\Users\Documents\GitHub\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(209,33): warning C4244: '=': conversion from 'std::streamsize' to 'unsigned int', possible loss of data
 D:\Users\Documents\GitHub\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(249,39): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   main.cpp
-  Generating Code...
 D:\Users\Documents\GitHub\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(256,36): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  File_Compression.vcxproj -> D:\Users\Documents\GitHub\project2_ctdl\File_Compression\x64\Debug\File_Compression.exe
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 484 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  File_Compression.vcxproj -> D:\Users\Documents\GitHub\project2_ctdl\File_Compression\x64\Release\File_Compression.exe
