@@ -204,7 +204,7 @@ void processFolder(string path, int format=0){
 			string filename = ent->d_name;
 			if (filename == "." || filename == "..")
 				continue;
-			if (filename.size() > 4) {
+			if (filename.size() > 4 && filename.find(".") != string::npos) {
 				string tail;
 				if (format == 1) {
 					tail = filename.substr(filename.size() - 5, filename.size());
