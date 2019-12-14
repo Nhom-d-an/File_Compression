@@ -1,0 +1,18 @@
+﻿  functionUtilities.cpp
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\functionUtilities.cpp(144,21): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  huffman.cpp
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\huffman.cpp(166,14): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\huffman.cpp(197,10): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\huffman.cpp(210,8): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\huffman.cpp(303,43): warning C4804: '>': unsafe use of type 'bool' in operation
+  LZ77.cpp
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(35,20): warning C4244: '=': conversion from 'std::streamsize' to 'unsigned int', possible loss of data
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(39,31): warning C4244: '=': conversion from 'std::streamsize' to 'unsigned int', possible loss of data
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(50,31): warning C4244: '=': conversion from 'std::streamsize' to 'unsigned int', possible loss of data
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(93,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(192,33): warning C4244: '=': conversion from 'std::streamsize' to 'unsigned int', possible loss of data
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(231,39): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\File_Compression\LZ77.cpp(237,36): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  main.cpp
+  Generating Code...
+  File_Compression.vcxproj -> C:\Users\Sy Pham\Documents\GitHub\Data\project2_ctdl\File_Compression\x64\Debug\File_Compression.exe
