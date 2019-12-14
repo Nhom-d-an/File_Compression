@@ -45,7 +45,7 @@ bool checkInPathOpen(string inPath) {
 //encoding file
 void encodingFile() {
 
-	cout << "Enter the path to the Text File needed to encode (.txt):";
+	cout << "Enter the path to the Text File needed to encode :";
 
 	string inPath;
 	string outPath;
@@ -184,7 +184,7 @@ void processFolder(string path, int format=0){
 	DIR* dir;
 	struct dirent* ent;
 
-	char* cPath = transStringToChar(path);
+	const char* cPath = path.c_str();
 	dir = opendir(cPath);
 
 	void(*function)(string);
@@ -206,8 +206,8 @@ void processFolder(string path, int format=0){
 				continue;
 			if (filename.size() > 4 && filename.find(".") != string::npos) {
 				string tail;
-				if (format == 1) {
-					tail = filename.substr(filename.size() - 5, filename.size());
+				if (format == 1) {//compression
+					tail = filename.substr(filename.size() - 5, filename.size());//check if the it is the name of the file
 					if (tail == tailFile) {//find the right format file
 						string newPath = path + "\\" + filename;
 						function(newPath);//process
@@ -219,7 +219,7 @@ void processFolder(string path, int format=0){
 						continue;
 					}
 				}
-				else {
+				else {//decompress
 					string newPath = path + "\\" + filename;
 					function(newPath);
 					if (remove(transStringToChar(newPath))) {//remove the beggin file
@@ -229,11 +229,11 @@ void processFolder(string path, int format=0){
 				}
 			}
 
-			string newPath = path + "\\" + filename;
+			string newPath = path + "\\" + filename;//go deeply into the folder
 			if (format == 0)
-				processFolder(newPath, 0);
+				processFolder(newPath, 0);//compression
 			else
-				processFolder(newPath, 1);
+				processFolder(newPath, 1);//decompression
 
 		}
 		closedir(dir);
